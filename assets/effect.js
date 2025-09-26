@@ -152,6 +152,8 @@ $('document').ready(function(){
 			var texts = $('#texts-container p');
 			texts.stop(true, true).hide();
 			texts.first().show();
+			$('#final_video_row').stop(true, true).hide();
+			$('#video_preamble').stop(true, true).hide();
 		}
 
 		function resetToWishOptions() {
@@ -165,9 +167,16 @@ $('document').ready(function(){
 			}
 			$('.photo-gallery').stop(true, true).fadeOut('fast');
 			$('.message').stop(true, true).hide();
+			$('#final_video_box').stop(true, true).hide();
+			$('#final_video_row').stop(true, true).hide();
+			var videoEl = document.getElementById('final_video');
+			if (videoEl) {
+				videoEl.pause();
+				videoEl.currentTime = 0;
+			}
 			resetTextMessages();
 			$('#story').stop(true, true).hide();
-			$('.cake').stop(true, true).fadeIn('fast');
+			$('#main_cake').stop(true, true).fadeIn('fast');
 			if (restoreBalloonsAfterStory) {
 				$('.balloons').stop(true, true).fadeIn('slow');
 				restoreBalloonsAfterStory = false;
@@ -187,8 +196,8 @@ $('document').ready(function(){
 			galleryAnimating = true;
 			populateGallery();
 			navigationStage = 'gallery';
-		if ($('.cake:visible').length) {
-			$('.cake').stop(true, true).fadeOut('fast');
+		if ($('#main_cake:visible').length) {
+			$('#main_cake').stop(true, true).fadeOut('fast');
 		}
 			if ($('.balloons:visible').length) {
 				restoreBalloonsAfterStory = true;
@@ -208,7 +217,7 @@ $('document').ready(function(){
 			strip.stop(true, true).scrollTop(0);
 			gallery.fadeIn('slow', function(){
 				var scrollArea = Math.max(0, strip[0].scrollHeight - strip.innerHeight());
-				var duration = Math.max(12000, scrollArea * 40);
+				var duration = Math.max(1000, scrollArea * 20);
 				strip.animate({ scrollTop: scrollArea }, duration, 'linear', function(){
 					gallery.fadeOut('slow', function(){
 						galleryAnimating = false;
@@ -226,36 +235,42 @@ $('document').ready(function(){
 			navigationStage = 'story';
 			$('body').removeClass('gallery-active');
 			$('#story').fadeOut('slow');
-			$('.cake').fadeOut('fast').promise().done(function(){
-				$('.message').fadeIn('slow');
+			var texts = $('#texts-container p');
+			texts.stop(true, true).hide();
+			$('#main_cake').fadeOut('fast').promise().done(function(){
+				$('.message').fadeIn('slow', function(){
+					playMessage(0);
+				});
 			});
 
-			var i;
-
-			function msgLoop (i) {
-				$("p:nth-child("+i+")").fadeOut('slow').delay(800).promise().done(function(){
-				i=i+1;
-				$("p:nth-child("+i+")").fadeIn('slow').delay(1000);
-				if(i==50){
-					$("p:nth-child(49)").fadeOut('slow').promise().done(function () {
-						$('.cake').fadeIn('fast');
-						if (restoreBalloonsAfterStory) {
-							$('.balloons').fadeIn('slow');
-						restoreBalloonsAfterStory = false;
-					}
-						$('body').removeClass('gallery-active');
-					});
-					
+			function playMessage(index) {
+				var items = $('#texts-container p');
+				if (index >= items.length) {
+					showVideoSection();
+					return;
 				}
-				else{
-					msgLoop(i);
-				}			
-
-			});
-				// body...
+				var current = items.eq(index);
+				current.fadeIn('slow').delay(2200).promise().done(function(){
+					current.fadeOut('slow').promise().done(function(){
+						playMessage(index + 1);
+					});
+				});
 			}
-			
-			msgLoop(0);
+
+			function showVideoSection() {
+				$('#video_preamble').fadeIn('slow', function(){
+					setTimeout(function(){
+						$('#final_video_row').fadeIn('slow', function(){
+							$('#final_video_box').fadeIn('slow');
+						});
+					}, 1200);
+				});
+				if (restoreBalloonsAfterStory) {
+					$('.balloons').fadeIn('slow');
+					restoreBalloonsAfterStory = false;
+				}
+				$('body').removeClass('gallery-active');
+			}
 		}
 
 		function closeCardModal(skipAnimation) {
@@ -483,6 +498,22 @@ $('document').ready(function(){
 			window.localStorage.removeItem('resumeFromCard');
 			resetToWishOptions(true);
 		}
+	})();
+
+	(function handleVideoAudioMixing(){
+		var videoEl = document.getElementById('final_video');
+		if (!videoEl) {
+			return;
+		}
+		var bgAudio = document.querySelector('.song');
+		if (!bgAudio) {
+			return;
+		}
+		videoEl.addEventListener('play', function(){
+			if (!bgAudio.paused) {
+				bgAudio.pause();
+			}
+		});
 	})();
 });
 

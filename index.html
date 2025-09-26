@@ -103,7 +103,7 @@
     </div> -->
     <div class="row cake-cover">
         <div class="col-md-12 texr-center">
-            <div class="cake">
+            <div class="cake" id="main_cake">
                 <div class="velas">
                     <div class="fuego"></div>
                     <div class="fuego"></div>
@@ -122,6 +122,23 @@
     </div>
     <div class="row message">
         <div class="col-md-12" id="texts-container">
+        </div>
+    </div>
+    <div class="row" id="video_preamble" style="display:none;">
+        <div class="col-md-12 text-center">
+            <div class="final-video-note preamble">A little surprise awaits…</div>
+        </div>
+    </div>
+    <div class="row" id="final_video_row" style="display:none;">
+        <div class="col-md-12">
+            <div id="final_video_box" class="final-video-box">
+                <div class="final-video-inner">
+                    <video id="final_video" controls preload="metadata" poster="assets/final-video-poster.jpeg">
+                        <source src="assets/video.MP4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
         </div>
     </div>
     <div class="navbar navbar-fixed-bottom">

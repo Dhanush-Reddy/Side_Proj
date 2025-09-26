@@ -4,7 +4,7 @@ var config = {
     // Try to keep each sentence under 15 characters so the layout stays tidy.
     texts: [
         "Happy birthday  Dhorasani amma 🥳",
-        "Last year party inka kalla mundhe undhi",
+        "Last year Birthday inka kalla mundhe undhi",
         "Inko Birthday e lopu eh occhedhi",
         "Ee saari thakkuva iendhi em badhapadaku mowa",
         "Next year sambavam chedham",

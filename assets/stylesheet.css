@@ -1469,6 +1469,34 @@ audio {
 	border-radius: 16px;
 }
 
+.final-video-box {
+	display: none;
+	margin: 60px auto 0;
+    max-width: 720px;
+}
+
+.final-video-inner {
+	background: rgba(255, 255, 255, 0.08);
+	border-radius: 18px;
+	padding: 24px;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+	text-align: center;
+}
+
+.final-video-inner video {
+	width: 100%;
+	max-height: 405px;
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+	background: #000;
+}
+
+.final-video-note {
+	margin-top: 12px;
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.7);
+}
+
 #birthday_card_modal {
 	position: fixed;
 	top: 0;
