@@ -1,80 +1,105 @@
-## 生日快乐
+## Happy Birthday
 
-> <b>修改config.js的配置就可以为您心爱的人做一个超具创意的网页生日快乐呀,喜欢的话fork or star一下呗~</b>
+> <b>Edit the config.js settings to build a wonderfully creative birthday web page for someone you love. If you enjoy it, please fork or star!</b>
 
 <img src="https://github.com/AJLoveChina/loveBalloon/blob/master/static/github-star.png" />
 
 ## TODO
-* [x] 每行祝福文字可以配一张图片
-* [ ] 配图支持旋转
+* [x] Pair each line of wishes with an image
+* [ ] Support rotating images
 
-### config.js 说明
-> 温馨提示: 每句话丶每个图片地址丶每个按钮文字的那一行，最后都要以**英文逗号**结尾哦！
+### config.js Notes
+> Friendly reminder: end every sentence, image path, and button label with an **English comma**!
 ```text
 var config = {
-    // 句子的长度可以任意， 你可以写十句话， 二十句话都可以
-    // 每句话尽量不要超过15个字,不然展示效果可能不太好
+    // The sentences can be any length; add as many as you like.
+    // Try to keep each sentence under 15 characters so the layout stays tidy.
     texts: [
-        "送给我",
-        "心爱的小可爱",
-        "今天是你的生日",
-        "这是我们在一起的",
-        "第三个生日了哦",
-        "去年的生日",
-        "还记得在王婆串串吃的呢",
-        "今年要吃好的喽哦",
-        "要把我家可爱猪猪喂饱饱",
-        "然后抱走",
+        "For me",
+        "My beloved cutie",
+        "Today is your birthday",
+        "This is our",
+        "third birthday together",
+        "Last year's birthday",
+        "I still remember eating at Wang Po Skewers",
+        "This year we'll eat something even better",
+        "I'll feed my adorable little piggy until she's full",
+        "Then I'll carry you away",
         "YAMI~~",
     ],
     /**
-     * imgs 可以不填, 但是如果要填写的话必须遵循下面的格式
-     * "对应上面的文字, 要完全一样" : "图片地址, 可以把图片放在imgs文件夹中"
-     * 例如
-     * "心爱的小可爱": "./imgs/xiaokeai.jpg"
+     * imgs is optional, but if you add entries please follow the format below.
+     * "Text that matches exactly" : "Image path (images can live in the imgs folder)"
+     * For example
+     * "My beloved cutie": "./imgs/xiaokeai.jpg"
      *
-     * 如果不要图片的话, 直接在每行开头写两个斜杠注释即可, 例如下面的 "今天是你的生日" 的图片就不会展示了:)
-     * Tip: 图片最好用正方形or接近正方形, 看起来效果更好
+     * If you skip an image, comment out the line with two leading slashes; for example,
+     * the image for "Today is your birthday" below will not be displayed.
+     * Tip: Square or nearly square images look best.
      */
     imgs: {
-        "心爱的小可爱": "./imgs/xiaokeai.png",
-        // "今天是你的生日": "./imgs/birthday.jpg",
+        "My beloved cutie": "./imgs/xiaokeai.png",
+        // "Today is your birthday": "./imgs/birthday.jpg",
     },
-    // 按钮文字描述, 以下是默认的按钮文字，英文的，您可以改成你喜欢的文字
+    // Button labels and key prompts; feel free to customize the wording.
     desc: {
-        turn_on: "开始",
-        play: "音乐",
-        bannar_coming: "颜色",
-        balloons_flying: "好像少点东西",
-        cake_fadein: "蛋糕？",
-        light_candle: "蜡烛？",
-        wish_message: "生日快乐",
+        turn_on: "Turn On Lights",
+        play: "Play Music",
+        bannar_coming: "Add Color",
+        balloons_flying: "Let the Balloons Fly",
+        cake_fadein: "Where's the Cake?",
+        light_candle: "Light the Candles",
+        blow_hint: "Blow into the microphone to make a wish!",
+        birthday_card: "Birthday Card",
+        continue_gallery: "Continue",
+        card_title: "Happy Birthday",
         story: "A MESSAGE FOR YOU",
     }
 };
 ```
 
 
-## 截图演示
+## Screenshot Demo
 <img src="./assets/birthday-demo2.gif"/>
 
-## 知乎使用教程
+## Microphone Tips
+- Allow microphone access when the candles light up so the page can detect the "blow".
+- If access is denied or unavailable, the experience continues automatically after a short delay.
+
+## Card & Gallery Flow
+- After the candles go out, the Birthday Card button opens a modal you can style or personalise.
+- The Continue button launches a scrolling gallery of 15 placeholder photos; replace the data URLs in code with your own images when you're ready.
+- Once the gallery finishes scrolling, the message sequence plays automatically.
+- The honoree's name appears beneath the Happy Birthday banner after you click “Add Color”; update the `<h1 id="honoree_name" class="honoree-name">` in `index.html` to change the wording or styling.
+- The “Birthday Card” button opens the bundled card experience (`external/HappyBirthday/index.html`) in a new browser tab so the main flow stays intact.
+
+## Gallery Images
+- Drop your photos into the `./gallery/` folder; portrait shots are welcome.
+- Update `config.js -> galleryImages` using objects that include the `src`, `width`, and `height` so each image keeps its native aspect ratio (e.g. `{ src: "./gallery/beach.jpeg", width: 960, height: 1280 }`).
+- `.jpeg` and `.jpg` extensions both work. Empty slots are filled with colourful placeholders until you add more files.
+
+## Netlify Deployment
+1. Install dependencies (none required) and ensure the project root is the publish directory.
+2. Upload or link this repository to Netlify; set the build command to `None` and publish directory to `.`.
+3. The included `netlify.toml` adds a friendly `/birthday-card` redirect that points to the bundled card experience in `external/HappyBirthday/index.html`.
+
+## Zhihu Tutorial
 [https://zhuanlan.zhihu.com/p/85899661](https://zhuanlan.zhihu.com/p/85899661)
 
-## 结尾
-喜欢的话关注一下[霸都丶傲天](https://github.com/ajlovechina)呗~  \
-定期更新一下爱情网页模板,简历模板,知识笔记,PDF书籍,原创深度技术分享等 :heart:
+## Closing
+If you like the project, follow [BaDu Aotian](https://github.com/ajlovechina)!  \
+New templates for love notes, resumes, study notes, PDF books, and original deep-dive tech posts are added regularly. :heart:
 
-* 知乎:[霸都丶傲天](https://www.zhihu.com/people/AJLoveChina)
-* Github:[霸都丶傲天](https://github.com/ajlovechina)
+* Zhihu: [BaDu Aotian](https://www.zhihu.com/people/AJLoveChina)
+* GitHub: [BaDu Aotian](https://github.com/ajlovechina)
 
 ## QA
-> 如何修改音乐？
+> How do I change the music?
 > 
-> 回答：将你自己的mp3音乐文件覆盖`assets`目录下面的`hbd.mp3`, 記住覆蓋后名字要完全一樣哦！
+> Replace the `assets/hbd.mp3` file with your own MP3. Make sure the filename stays exactly the same!
 
 
-## 链接
-* [第一期:爱情树 🌴将相爱的时刻永远珍藏 （微信，QQ可完美查看）](https://github.com/AJLoveChina/LoveTree)
-* [第二期: :cake:改改数据,为心爱的人做一个超具创意的网页生日祝福吧~ (生日快乐)](https://github.com/AJLoveChina/birthday)
-* [第三期: :balloon:塞纳河畔，左岸的咖啡。告白气球，飞入我的心扉。](https://github.com/AJLoveChina/loveBalloon)
+## Links
+* [Episode 1: Love Tree - Preserve every cherished moment (WeChat and QQ friendly)](https://github.com/AJLoveChina/LoveTree)
+* [Episode 2: Customize the data to create a super creative birthday greeting (Happy Birthday)](https://github.com/AJLoveChina/birthday)
+* [Episode 3: Along the Seine, balloons carry my love into your heart.](https://github.com/AJLoveChina/loveBalloon)

@@ -4,6 +4,211 @@ $(window).load(function(){
 });
 $('document').ready(function(){
 		var vw;
+		var wishSequenceStarted = false;
+		var blowAutoComplete = null;
+		var storySequenceStarted = false;
+		var galleryAnimating = false;
+		var galleryPopulated = false;
+		var restoreBalloonsAfterStory = false;
+
+		function createPlaceholderData(label, color) {
+			var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='1280' height='720'>" +
+				"<rect width='100%' height='100%' fill='" + color + "' rx='40' ry='40'/>" +
+				"<text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='72' fill='white' font-family='Signika, sans-serif'>" + label + "</text>" +
+			"</svg>";
+			return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+		}
+
+		function normalizeImageEntry(entry) {
+			if (!entry) {
+				return null;
+			}
+			if (typeof entry === 'string') {
+				return { src: entry.trim() };
+			}
+			if (typeof entry.src === 'string') {
+				var width = parseInt(entry.width, 10);
+				var height = parseInt(entry.height, 10);
+				return {
+					src: entry.src.trim(),
+					width: Number.isFinite(width) && width > 0 ? width : undefined,
+					height: Number.isFinite(height) && height > 0 ? height : undefined
+				};
+			}
+			return null;
+		}
+
+		function populateGallery() {
+			if (galleryPopulated) {
+				return;
+			}
+			var userImages = [];
+			if (window.config && Array.isArray(window.config.galleryImages)) {
+				userImages = window.config.galleryImages
+					.map(normalizeImageEntry)
+					.filter(function (entry) { return entry && entry.src.length > 0; });
+			}
+			var colors = ['#FF6F61', '#6B5B95', '#88B04B', '#F7CAC9', '#92A8D1', '#955251', '#B565A7', '#009B77', '#DD4124', '#45B8AC', '#EFC050', '#5B5EA6', '#9B2335', '#DFCFBE', '#55B4B0'];
+			var strip = $('#photo_gallery .photo-strip');
+			strip.empty();
+			var tileCount = Math.max(15, userImages.length);
+			for (var i = 0; i < tileCount; i++) {
+				var label = 'Photo ' + (i + 1);
+				var placeholderColor = colors[i % colors.length];
+				var data = userImages[i];
+				var src = data ? data.src : createPlaceholderData(label, placeholderColor);
+				var altText = data ? ('Gallery Photo ' + (i + 1)) : label;
+				var item = $('<div/>', {
+					class: 'photo-item'
+				});
+				if (data && data.width && data.height) {
+					var ratio = (data.height / data.width) * 100;
+					item.css('--photo-aspect', ratio.toFixed(4) + '%');
+				} else {
+					item.css('--photo-aspect', '56.25%');
+				}
+				var img = $('<img/>', {
+					src: src,
+					alt: altText,
+					loading: 'lazy'
+				});
+				item.append(img);
+				strip.append(item);
+			}
+			galleryPopulated = true;
+		}
+
+		function showPostWishOptions() {
+			setTimeout(function(){
+				$('#birthday_card, #continue_gallery').fadeIn('slow');
+				$('#story').hide();
+			}, 1200);
+		}
+
+		function triggerWishSequence() {
+			if (wishSequenceStarted) {
+				return;
+			}
+			wishSequenceStarted = true;
+			if (blowAutoComplete) {
+				clearTimeout(blowAutoComplete);
+				blowAutoComplete = null;
+			}
+			vw = $(window).width()/2;
+
+			$('#b1,#b2,#b3,#b4,#b5,#b6,#b7').stop();
+			$('#b1').attr('id','b11');
+			$('#b2').attr('id','b22');
+			$('#b3').attr('id','b33');
+			$('#b4').attr('id','b44');
+			$('#b5').attr('id','b55');
+			$('#b6').attr('id','b66');
+			$('#b7').attr('id','b77');
+			$('#b11').animate({top:240, left: vw-350},500);
+			$('#b22').animate({top:240, left: vw-250},500);
+			$('#b33').animate({top:240, left: vw-150},500);
+			$('#b44').animate({top:240, left: vw-50},500);
+			$('#b55').animate({top:240, left: vw+50},500);
+			$('#b66').animate({top:240, left: vw+150},500);
+			$('#b77').animate({top:240, left: vw+250},500);
+			$('.balloons').css('opacity','0.9');
+			$('.balloons h2').fadeIn(3000);
+			$('#blow_hint').fadeOut('slow');
+			showPostWishOptions();
+		}
+
+		function startPhotoGallery() {
+			if (galleryAnimating || storySequenceStarted) {
+				return;
+			}
+			galleryAnimating = true;
+			populateGallery();
+		if ($('.cake:visible').length) {
+			$('.cake').stop(true, true).fadeOut('fast');
+		}
+			if ($('.balloons:visible').length) {
+				restoreBalloonsAfterStory = true;
+				$('.balloons').stop(true, true).fadeOut('fast');
+			}
+			$('body').addClass('gallery-active');
+			closeCardModal(true);
+			$('#birthday_card, #continue_gallery').fadeOut('slow');
+			var gallery = $('#photo_gallery');
+			var strip = gallery.find('.photo-strip');
+			if (!strip.length) {
+				galleryAnimating = false;
+				startStorySequence();
+				return;
+			}
+			strip.stop(true, true).scrollTop(0);
+			gallery.fadeIn('slow', function(){
+				var scrollArea = Math.max(0, strip[0].scrollHeight - strip.innerHeight());
+				var duration = Math.max(12000, scrollArea * 40);
+				strip.animate({ scrollTop: scrollArea }, duration, 'linear', function(){
+					gallery.fadeOut('slow', function(){
+						galleryAnimating = false;
+						startStorySequence();
+					});
+				});
+			});
+		}
+
+		function startStorySequence() {
+			if (storySequenceStarted) {
+				return;
+			}
+			storySequenceStarted = true;
+			$('body').removeClass('gallery-active');
+			$('#story').fadeOut('slow');
+			$('.cake').fadeOut('fast').promise().done(function(){
+				$('.message').fadeIn('slow');
+			});
+
+			var i;
+
+			function msgLoop (i) {
+				$("p:nth-child("+i+")").fadeOut('slow').delay(800).promise().done(function(){
+				i=i+1;
+				$("p:nth-child("+i+")").fadeIn('slow').delay(1000);
+				if(i==50){
+					$("p:nth-child(49)").fadeOut('slow').promise().done(function () {
+						$('.cake').fadeIn('fast');
+						if (restoreBalloonsAfterStory) {
+							$('.balloons').fadeIn('slow');
+						restoreBalloonsAfterStory = false;
+					}
+						$('body').removeClass('gallery-active');
+					});
+					
+				}
+				else{
+					msgLoop(i);
+				}			
+
+			});
+				// body...
+			}
+			
+			msgLoop(0);
+		}
+
+		function closeCardModal(skipAnimation) {
+			var modal = $('#birthday_card_modal');
+			if (skipAnimation) {
+				modal.stop(true, true).hide().css('display', 'none');
+				$('body').removeClass('modal-open');
+				return;
+			}
+			if (!modal.is(':visible')) {
+				$('body').removeClass('modal-open');
+				modal.css('display', 'none');
+				return;
+			}
+			$('body').removeClass('modal-open');
+			modal.fadeOut('slow', function(){
+				modal.css('display', 'none');
+			});
+		}
 		$(window).resize(function(){
 			 vw = $(window).width()/2;
 			$('#b1,#b2,#b3,#b4,#b5,#b6,#b7').stop();
@@ -46,6 +251,9 @@ $('document').ready(function(){
 
 	$('#bannar_coming').click(function(){
 		$('.bannar').addClass('bannar-come');
+		var honoree = $('#honoree_name');
+		honoree.removeClass('hidden');
+		honoree.hide().fadeIn('slow');
 		$(this).fadeOut('slow').delay(6000).promise().done(function(){
 			$('#balloons_flying').fadeIn('slow');
 		});
@@ -133,65 +341,71 @@ $('document').ready(function(){
 
 	$('#light_candle').click(function(){
 		$('.fuego').fadeIn('slow');
-		$(this).fadeOut('slow').promise().done(function(){
-			$('#wish_message').fadeIn('slow');
-		});
-	});
-
-		
-	$('#wish_message').click(function(){
-		 vw = $(window).width()/2;
-
-		$('#b1,#b2,#b3,#b4,#b5,#b6,#b7').stop();
-		$('#b1').attr('id','b11');
-		$('#b2').attr('id','b22')
-		$('#b3').attr('id','b33')
-		$('#b4').attr('id','b44')
-		$('#b5').attr('id','b55')
-		$('#b6').attr('id','b66')
-		$('#b7').attr('id','b77')
-		$('#b11').animate({top:240, left: vw-350},500);
-		$('#b22').animate({top:240, left: vw-250},500);
-		$('#b33').animate({top:240, left: vw-150},500);
-		$('#b44').animate({top:240, left: vw-50},500);
-		$('#b55').animate({top:240, left: vw+50},500);
-		$('#b66').animate({top:240, left: vw+150},500);
-		$('#b77').animate({top:240, left: vw+250},500);
-		$('.balloons').css('opacity','0.9');
-		$('.balloons h2').fadeIn(3000);
-		$(this).fadeOut('slow').delay(3000).promise().done(function(){
-			$('#story').fadeIn('slow');
-		});
+		$('#blow_hint').removeClass('text-danger').addClass('text-warning').fadeIn('slow');
+		var button = $(this);
+		button.fadeOut('slow');
+		if (typeof startCandleBlowListener === 'function') {
+			blowAutoComplete = setTimeout(function(){
+				if (!wishSequenceStarted) {
+					if (typeof stopCandleBlowListener === 'function') {
+						stopCandleBlowListener();
+					}
+					$('.fuego').fadeOut('slow');
+					triggerWishSequence();
+				}
+			}, 15000);
+			startCandleBlowListener(function(){
+				if (typeof stopCandleBlowListener === 'function') {
+					stopCandleBlowListener();
+				}
+				$('.fuego').fadeOut('slow');
+				triggerWishSequence();
+			}).catch(function(error){
+				if (blowAutoComplete) {
+					clearTimeout(blowAutoComplete);
+					blowAutoComplete = null;
+				}
+				console.error('Unable to access the microphone.', error);
+				$('#blow_hint').removeClass('text-warning').addClass('text-danger').text('Microphone unavailable. Continuing automatically.');
+				setTimeout(function(){
+					if (typeof stopCandleBlowListener === 'function') {
+						stopCandleBlowListener();
+					}
+					$('.fuego').fadeOut('slow');
+					triggerWishSequence();
+				}, 2000);
+			});
+		} else {
+			setTimeout(function(){
+				$('.fuego').fadeOut('slow');
+				triggerWishSequence();
+			}, 2000);
+		}
 	});
 	
-	$('#story').click(function(){
-		$(this).fadeOut('slow');
-		$('.cake').fadeOut('fast').promise().done(function(){
-			$('.message').fadeIn('slow');
-		});
-		
-		var i;
+	$('#continue_gallery').click(function(){
+		startPhotoGallery();
+	});
 
-		function msgLoop (i) {
-			$("p:nth-child("+i+")").fadeOut('slow').delay(800).promise().done(function(){
-			i=i+1;
-			$("p:nth-child("+i+")").fadeIn('slow').delay(1000);
-			if(i==50){
-				$("p:nth-child(49)").fadeOut('slow').promise().done(function () {
-					$('.cake').fadeIn('fast');
-				});
-				
-			}
-			else{
-				msgLoop(i);
-			}			
+	$('#birthday_card').click(function(){
+		const cardUrl = 'external/HappyBirthday/index.html';
+		window.open(cardUrl, '_blank', 'noopener');
+	});
 
-		});
-			// body...
+	$('#close_card').click(function(event){
+		event.preventDefault();
+		event.stopPropagation();
+		closeCardModal();
+	});
+
+	$('#birthday_card_modal').click(function(event){
+		if (event.target === this) {
+			closeCardModal();
 		}
-		
-		msgLoop(0);
-		
+	});
+
+	$('#story').click(function(){
+		startStorySequence();
 	});
 });
 

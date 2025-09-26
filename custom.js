@@ -1,4 +1,4 @@
-// 霸都丶傲天 2019.10.10
+// BaDu Aotian 2019-10-10
 $(function () {
     let dom = document.createElement("span");
     config.texts.forEach(function (item) {
@@ -21,5 +21,12 @@ $(function () {
         if (dom.length > 0 && config.desc[k]) {
             dom.html(config.desc[k]);
         }
+    }
+});
+
+$(function () {
+    if (config && Array.isArray(config.texts) && config.texts.length > 0) {
+        const snippetCount = Math.min(5, config.texts.length);
+        $("#card_message").html(config.texts.slice(0, snippetCount).join('<br>'));
     }
 });

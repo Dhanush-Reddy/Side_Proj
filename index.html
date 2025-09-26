@@ -36,6 +36,7 @@
 
 <body>
 <div class="loading"></div>
+<button class="back-button" type="button" onclick="window.history.back()">← Back</button>
 <audio class="song" controls loop>
     <source src="assets/hbd.mp3"></source>
     Your browser isn't invited for super fun audio time.
@@ -92,6 +93,11 @@
             <img src="assets/banner.png" class="bannar">
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="honoree-name hidden" id="honoree_name">Prajwalitha</h1>
+        </div>
+    </div>
     <!-- <div class="row message">
         <div class="col-md-12"><p>Khushbu</p></div>
     </div> -->
@@ -108,7 +114,11 @@
                 <div class="cobertura"></div>
                 <div class="bizcocho"></div>
             </div>
+            <p id="blow_hint" style="display:none;" class="text-center text-warning"></p>
         </div>
+    </div>
+    <div id="photo_gallery" class="photo-gallery" style="display:none;">
+        <div class="photo-strip"></div>
     </div>
     <div class="row message">
         <div class="col-md-12" id="texts-container">
@@ -123,7 +133,8 @@
                 <button class="btn btn-primary" id="balloons_flying">Fly With Balloons</button>
                 <button class="btn btn-primary" id="cake_fadein">Most Delicious Cake Ever</button>
                 <button class="btn btn-primary" id="light_candle"> Light Candle</button>
-                <button class="btn btn-primary" id="wish_message">Happy Birthday</button>
+                <button class="btn btn-primary" id="birthday_card">Birthday Card</button>
+                <button class="btn btn-primary" id="continue_gallery">Continue</button>
                 <button class="btn btn-primary" id="story">A mesage for you</button>
                 <!-- <button class="btn btn-primary" id="cake_cut">Lrt's Cut the Cake</button> -->
             </div>
@@ -132,11 +143,20 @@
 
 
 </div>
-</body>
+<div id="birthday_card_modal" style="display:none;">
+    <div class="birthday-card">
+        <button type="button" class="close-card" id="close_card" aria-label="Close">×</button>
+        <h2 id="card_title">Happy Birthday</h2>
+        <div id="card_message" class="card-message"></div>
+    </div>
+</div>
 <script src="assets/jquery.min.js"></script>
 <script src="./assets/bootstrap.min.js"></script>
+<script src="assets/volume-meter.js"></script>
+<script src="assets/blow-out.js"></script>
 <script src="assets/effect.js"></script>
 
 <script src="custom.js"></script>
 
+</body>
 </html>

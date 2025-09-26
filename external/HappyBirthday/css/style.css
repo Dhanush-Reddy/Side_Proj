@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #E5E5E5;
+  background-image: url("bg.jpg");
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 24px 12px;
+}
+
+.page-spacer { height: 0; }
+
+.back-button {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10000;
+  border: none;
+  padding: 8px 14px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-family: 'Lobster', cursive;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.back-button:hover,
+.back-button:focus {
+  background: rgba(0,0,0,0.65);
+}
+
+#card {
+  position: relative;
+  width: 400px;
+  height: 900px;
+  transform-style: preserve-3d;
+  perspective: 4000px;
+  transition: transform 1s ease-in-out;
+}
+
+#card-front,
+#card-inside {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.5);
+  backface-visibility: hidden;
+}
+
+#card-front {
+  color: #FFDFDF;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  perspective: 4000px;
+  background: linear-gradient(180deg, #ff5c5c 0%, #ff7b7b 100%);
+  transition: transform 1s linear;
+  backface-visibility: hidden;
+}
+
+#card-front:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #444;
+  transform: translateZ(-1px);
+}
+
+#card-front .wrap { backface-visibility: hidden; }
+
+.wrap {
+  padding: 1.5em 2.5em;
+  height: 100%;
+}
+
+#card h1 {
+  text-align: center;
+  font-family: 'Lobster', cursive;
+  font-style: italic;
+  font-size: clamp(48px, 6vw, 70px);
+  text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15), 1px 1px 0 #ffc8c8, 2px 2px 0 #ff9696, 3px 3px 0 #ff7d7d;
+  color: #FFF;
+}
+
+#card-inside {
+  background: #FFEFEF;
+  box-shadow: inset 2px 0 1px rgba(0, 0, 0, 0.05);
+  font-size: 1.2em;
+  line-height: 1.5;
+  font-family: 'Lobster', cursive;
+  color: #331717;
+  font-style: italic;
+  transform: rotateY(180deg);
+  transition: transform 1s linear;
+}
+
+p { margin-top: 1em; }
+
+p:first-child { margin-top: 0; }
+
+p.signed {
+  margin-top: 1em;
+  text-align: center;
+  font-family: 'Indie Flower', cursive;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+#card-front button {
+  position: absolute;
+  bottom: 1.5em;
+  right: 1.2em;
+  background: #F44;
+  color: #FFF;
+  font-family: 'Lobster', cursive;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.6em;
+  padding: 0.5em 0.8em;
+  border: none;
+  cursor: pointer;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.4);
+}
+
+#card-front button:hover,
+#card-front button:focus { background: #F22; }
+
+#close { display: none; }
+
+#card.open-half #card-front,
+#card.close-half #card-front {
+  transform: rotateY(-90deg);
+}
+
+#card.open-fully #card-front {
+  background: #FFEFEF;
+  transform: rotateY(-180deg);
+}
+
+#card.open-fully #card-inside,
+#card.close-half #card-inside {
+  transform: rotateY(0deg);
+}
+
+#card.open-fully #open,
+#card.close-half #open { display: none; }
+
+#card.open-fully #close,
+#card-open-half #close { display: inline; }
+
+footer {
+  max-width: 500px;
+  margin: 40px auto;
+  font-family: 'Lobster', cursive;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #888;
+}
+
+@media (max-width: 600px) {
+  body { padding: 16px 8px; }
+  #card {
+    width: min(95vw, 360px);
+    height: min(95vh, 800px);
+  }
+  .wrap { padding: 1.4em; }
+  #card-front button { font-size: 1.3em; }
+}
+
+@media (max-width: 420px) {
+  #card {
+    width: 95vw;
+    height: min(95vh, 760px);
+  }
+  #card-front button { right: 0.8em; bottom: 1.1em; }
+}

@@ -1,42 +1,64 @@
-// 霸都丶傲天 2019年10月10日 https://github.com/AJLoveChina/birthday
+// BaDu Aotian October 10, 2019 https://github.com/AJLoveChina/birthday
 var config = {
-    // 句子的长度可以任意， 你可以写十句话， 二十句话都可以
-    // 每句话尽量不要超过15个字,不然展示效果可能不太好
+    // The sentences can be any length; add as many as you like.
+    // Try to keep each sentence under 15 characters so the layout stays tidy.
     texts: [
-        "送给我",      //这里,每句话结尾的最后一个逗号必须是英文的哦!! 很重要哦!!
-        "心爱的小可爱",  // 同上...
-        "今天是你的生日",
-        "这是我们在一起的",
-        "第三个生日了哦",
-        "去年的生日",
-        "还记得在王婆串串吃的呢",
-        "今年要吃好的喽哦",
-        "要把我家可爱猪猪喂饱饱",
-        "然后抱走",
+        "For me",      // Remember: each trailing comma must be an English comma!
+        "My beloved cutie",  // Same as above.
+        "Today is your birthday",
+        "This is our",
+        "third birthday together",
+        "Last year's birthday",
+        "I still remember eating at Wang Po Skewers",
+        "This year we'll eat something even better",
+        "I'll feed my adorable little piggy until she's full",
+        "Then I'll carry you away",
         "YAMI~~",
     ],
     /**
-     * imgs 可以不填, 但是如果要填写的话必须遵循下面的格式
-     * "对应上面的文字, 要完全一样" : "图片地址, 可以把图片放在imgs文件夹中"
-     * 例如
-     * "心爱的小可爱": "./imgs/xiaokeai.jpg"
+     * imgs is optional, but if you add entries please follow the format below.
+     * "Text that matches exactly" : "Image path (images can live in the imgs folder)"
+     * For example
+     * "My beloved cutie": "./imgs/xiaokeai.jpg"
      *
-     * 如果不要图片的话, 直接在每行开头写两个斜杠注释即可, 例如下面的 "今天是你的生日" 的图片就不会展示了:)
-     * Tip: 图片最好用正方形or接近正方形, 看起来效果更好
+     * If you skip an image, comment out the line with two leading slashes; for example,
+     * the image for "Today is your birthday" below will not be displayed.
+     * Tip: Square or nearly square images look best.
      */
     imgs: {
-        "心爱的小可爱": "./imgs/xiaokeai.png",
-        // "今天是你的生日": "./imgs/birthday.jpg",
+        "My beloved cutie": "./imgs/xiaokeai.png",
+        // "Today is your birthday": "./imgs/birthday.jpg",
     },
-    // 按钮文字描述, 以下是默认的按钮文字，英文的，您可以改成你喜欢的文字
+    // Add gallery image paths (16:9 recommended). Replace the placeholders with your own files in the ./gallery folder.
+    galleryImages: [
+        { src: "./gallery/photo1.jpeg", width: 963, height: 1280 },
+        { src: "./gallery/photo2.jpeg", width: 960, height: 1280 },
+        { src: "./gallery/photo3.jpeg", width: 720, height: 1280 },
+        { src: "./gallery/photo4.jpeg", width: 720, height: 1280 },
+        { src: "./gallery/photo5.jpeg", width: 720, height: 1280 },
+        { src: "./gallery/photo6.jpeg", width: 720, height: 1280 },
+        { src: "./gallery/photo7.jpeg", width: 720, height: 1280 },
+        { src: "./gallery/photo8.jpeg", width: 720, height: 1280 },
+        { src: "./gallery/photo9.jpeg", width: 720, height: 1280 },
+        { src: "./gallery/photo10.jpeg", width: 960, height: 1280 },
+        { src: "./gallery/photo11.jpeg", width: 720, height: 1280 },
+        { src: "./gallery/photo12.jpeg", width: 1224, height: 1539 },
+        { src: "./gallery/photo13.jpeg", width: 900, height: 1581 },
+        { src: "./gallery/photo14.jpeg", width: 1200, height: 1600 },
+        { src: "./gallery/photo15.jpeg", width: 720, height: 1280 },
+    ],
+    // Button labels and key prompts; feel free to customize the wording.
     desc: {
-        turn_on: "开始",
-        play: "音乐",
-        bannar_coming: "颜色",
-        balloons_flying: "好像少点东西",
-        cake_fadein: "蛋糕？",
-        light_candle: "蜡烛？",
-        wish_message: "生日快乐",
+        turn_on: "Turn On Lights",
+        play: "Play Music",
+        bannar_coming: "Add Color",
+        balloons_flying: "Let the Balloons Fly",
+        cake_fadein: "Where's the Cake?",
+        light_candle: "Light the Candles",
+        blow_hint: "Blow into the microphone to make a wish!",
+        birthday_card: "Birthday Card",
+        continue_gallery: "Continue",
+        card_title: "Happy Birthday",
         story: "A MESSAGE FOR YOU",
     }
 };

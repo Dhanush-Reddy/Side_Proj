@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/birthday-card"
+  to = "/external/HappyBirthday/index.html"
+  status = 200
