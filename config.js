@@ -3,17 +3,13 @@ var config = {
     // The sentences can be any length; add as many as you like.
     // Try to keep each sentence under 15 characters so the layout stays tidy.
     texts: [
-        "For me",      // Remember: each trailing comma must be an English comma!
-        "My beloved cutie",  // Same as above.
-        "Today is your birthday",
-        "This is our",
-        "third birthday together",
-        "Last year's birthday",
-        "I still remember eating at Wang Po Skewers",
-        "This year we'll eat something even better",
-        "I'll feed my adorable little piggy until she's full",
-        "Then I'll carry you away",
-        "YAMI~~",
+        "Happy birthday  Dhorasani amma 🥳",
+        "Last year party inka kalla mundhe undhi",
+        "Inko Birthday e lopu eh occhedhi",
+        "Ee saari thakkuva iendhi em badhapadaku mowa",
+        "Next year sambavam chedham",
+        "Enjoy Yourday 🎂"
+
     ],
     /**
      * imgs is optional, but if you add entries please follow the format below.
