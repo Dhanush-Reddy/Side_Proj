@@ -1,4 +1,18 @@
+var navigationStage = 'initial';
+var galleryStrip = null;
+
 window.handleBackNavigation = function () {
+    if (navigationStage === 'gallery' || navigationStage === 'story') {
+        if (typeof window.resetToOptions === 'function') {
+            window.resetToOptions();
+        }
+        return;
+    }
+
+    if (navigationStage === 'options') {
+        navigationStage = 'initial';
+    }
+
     if (window.history.length > 1) {
         window.history.back();
     } else {
@@ -87,11 +101,26 @@ $('document').ready(function(){
 			galleryPopulated = true;
 		}
 
-		function showPostWishOptions() {
+		function scheduleStoryReveal() {
+			$('#story').hide();
 			setTimeout(function(){
-				$('#birthday_card, #continue_gallery').fadeIn('slow');
-				$('#story').hide();
-			}, 1200);
+				$('#story').fadeIn('slow');
+			}, 3000);
+		}
+
+		function showPostWishOptions(forceInstant) {
+			navigationStage = 'options';
+			var revealButtons = function(){
+				$('#birthday_card, #continue_gallery').stop(true, true).fadeIn('slow');
+				scheduleStoryReveal();
+			};
+			if (forceInstant) {
+				$('#birthday_card, #continue_gallery').stop(true, true).show();
+				scheduleStoryReveal();
+			} else {
+				$('#birthday_card, #continue_gallery').hide();
+				setTimeout(revealButtons, 1200);
+			}
 		}
 
 		function triggerWishSequence() {
@@ -126,12 +155,45 @@ $('document').ready(function(){
 			showPostWishOptions();
 		}
 
+		function resetTextMessages() {
+			var texts = $('#texts-container p');
+			texts.stop(true, true).hide();
+			texts.first().show();
+		}
+
+		function resetToWishOptions() {
+			if (blowAutoComplete) {
+				clearTimeout(blowAutoComplete);
+				blowAutoComplete = null;
+			}
+			if (galleryStrip && galleryStrip.length) {
+				galleryStrip.stop(true, true);
+				galleryStrip.scrollTop(0);
+			}
+			$('.photo-gallery').stop(true, true).fadeOut('fast');
+			$('.message').stop(true, true).hide();
+			resetTextMessages();
+			$('#story').stop(true, true).hide();
+			$('.cake').stop(true, true).fadeIn('fast');
+			if (restoreBalloonsAfterStory) {
+				$('.balloons').stop(true, true).fadeIn('slow');
+				restoreBalloonsAfterStory = false;
+			}
+			storySequenceStarted = false;
+			galleryAnimating = false;
+			$('body').removeClass('gallery-active');
+			showPostWishOptions(true);
+		}
+
+		window.resetToOptions = resetToWishOptions;
+
 		function startPhotoGallery() {
 			if (galleryAnimating || storySequenceStarted) {
 				return;
 			}
 			galleryAnimating = true;
 			populateGallery();
+			navigationStage = 'gallery';
 		if ($('.cake:visible').length) {
 			$('.cake').stop(true, true).fadeOut('fast');
 		}
@@ -144,6 +206,7 @@ $('document').ready(function(){
 			$('#birthday_card, #continue_gallery').fadeOut('slow');
 			var gallery = $('#photo_gallery');
 			var strip = gallery.find('.photo-strip');
+			galleryStrip = strip;
 			if (!strip.length) {
 				galleryAnimating = false;
 				startStorySequence();
@@ -167,6 +230,7 @@ $('document').ready(function(){
 				return;
 			}
 			storySequenceStarted = true;
+			navigationStage = 'story';
 			$('body').removeClass('gallery-active');
 			$('#story').fadeOut('slow');
 			$('.cake').fadeOut('fast').promise().done(function(){
