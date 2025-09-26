@@ -17,7 +17,6 @@
 <meta name="theme-color" content="#F26B38">
 </head>
 <body>
-<button class="back-button" type="button" onclick="handleBackNavigation()">← Back</button>
 <div id="card">
 <div id="card-inside">
 <div class="wrap wishesFont">
@@ -52,6 +51,9 @@
 </div>
 <script>
   function handleBackNavigation() {
+    if (window.localStorage) {
+      window.localStorage.setItem('resumeFromCard', '1');
+    }
     if (window.history.length > 1) {
       window.history.back();
     } else {

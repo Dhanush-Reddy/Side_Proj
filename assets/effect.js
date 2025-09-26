@@ -110,6 +110,7 @@ $('document').ready(function(){
 
 		function showPostWishOptions(forceInstant) {
 			navigationStage = 'options';
+			wishSequenceStarted = true;
 			var revealButtons = function(){
 				$('#birthday_card, #continue_gallery').stop(true, true).fadeIn('slow');
 				scheduleStoryReveal();
@@ -462,6 +463,9 @@ $('document').ready(function(){
 
 	$('#birthday_card').click(function(){
 		const cardUrl = 'external/HappyBirthday/index.html';
+		if (window.localStorage) {
+			window.localStorage.setItem('resumeFromCard', '1');
+		}
 		window.open(cardUrl, '_blank', 'noopener');
 	});
 
@@ -480,6 +484,13 @@ $('document').ready(function(){
 	$('#story').click(function(){
 		startStorySequence();
 	});
+
+	(function resumeFromCardIfNeeded(){
+		if (window.localStorage && window.localStorage.getItem('resumeFromCard') === '1') {
+			window.localStorage.removeItem('resumeFromCard');
+			resetToWishOptions(true);
+		}
+	})();
 });
 
 
