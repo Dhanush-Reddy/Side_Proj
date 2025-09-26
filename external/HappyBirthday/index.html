@@ -17,7 +17,7 @@
 <meta name="theme-color" content="#F26B38">
 </head>
 <body>
-<button class="back-button" type="button" onclick="window.history.back()">← Back</button>
+<button class="back-button" type="button" onclick="handleBackNavigation()">← Back</button>
 <div id="card">
 <div id="card-inside">
 <div class="wrap wishesFont">
@@ -50,6 +50,16 @@
 <button id="open" data-balloon="Click to Open Card!" data-balloon-length="medium" data-balloon-pos="left" data-balloon-visible>&gt;</button>
 <button id="close" data-balloon="! bɿɒɔ ɘƨolɔ oɈ ʞɔilƆ" data-balloon-length="medium" data-balloon-pos="left" data-balloon-visible>&lt;</button>
 </div>
+<script>
+  function handleBackNavigation() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      var fallback = window.location.origin ? window.location.origin + '/' : './';
+      window.location.href = fallback;
+    }
+  }
+</script>
 <script  src="js/index.js"></script>
 </body>
 </html>

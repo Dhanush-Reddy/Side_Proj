@@ -1,3 +1,12 @@
+window.handleBackNavigation = function () {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        var fallback = window.location.origin ? window.location.origin + '/' : './';
+        window.location.href = fallback;
+    }
+};
+
 $(window).load(function(){
 	$('.loading').fadeOut('fast');
 	$('.container').fadeIn('fast');
